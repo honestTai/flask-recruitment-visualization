@@ -1,0 +1,41 @@
+@startuml
+actor User
+participant "客户端" as Client
+participant "Flask" as Server
+participant "Matplotlib" as Matplotlib
+participant "Job数据" as JobData
+activate User
+User -> Client: 请求获取职位分析图表数据
+activate Client
+Client -> Server: 发送获取职位分析图表数据请求
+activate Server
+Server -> JobData: 调用数据获取函数
+activate JobData
+alt 数据获取函数调用成功
+    JobData -> JobData: 处理请求参数
+    alt 参数异常
+        JobData -> Server: 返回参数异常错误
+    else
+        JobData -> Server: 返回清洗后的数据
+    end
+else 数据获取函数调用失败
+    Server -> Client: 返回数据获取失败错误
+end
+deactivate JobData
+deactivate Server
+activate Matplotlib
+alt 数据获取成功
+    Matplotlib -> Matplotlib: 绘制图表
+    alt 绘制成功
+        Matplotlib -> Server: 返回绘制结果
+    else 绘制失败
+        Matplotlib -> Server: 返回绘制失败错误
+    end
+else 数据获取失败
+    Server -> Client: 返回数据获取失败错误
+end
+deactivate Matplotlib
+deactivate Client
+Client -> User: 显示职位分析图表
+deactivate User
+@enduml

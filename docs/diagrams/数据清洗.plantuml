@@ -1,0 +1,33 @@
+@startuml
+actor User
+participant "客户端" as Client
+participant "Flask" as Server
+participant "数据清洗函数" as Cleaner
+activate User
+activate Client
+User -> Client: 发起数据清洗请求
+Client -> Server: 发送数据清洗请求
+activate Server
+Server -> Cleaner: 调用数据清洗函数
+activate Cleaner
+Cleaner -> Cleaner: 检查参数合法性
+alt 参数异常或数据源不支持
+    Server -> Client: 返回400错误，参数异常
+    Client -> User: 显示参数异常提示
+else
+    Cleaner -> Cleaner: 获取原始数据
+    alt 原始数据为空
+        Server -> Client: 返回500错误，无可用数据
+        Client -> User: 显示无可用数据提示
+    else
+        Cleaner -> Cleaner: 获取已清洗数据
+        Cleaner -> Server: 计算数据数量
+        Server -> Client: 返回数据统计结果
+        Client -> User: 显示数据统计结果
+    end
+end
+deactivate Cleaner
+deactivate Server
+deactivate User
+deactivate Client
+@enduml

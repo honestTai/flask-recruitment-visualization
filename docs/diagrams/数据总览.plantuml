@@ -1,0 +1,26 @@
+@startuml
+actor User
+participant "客户端" as Client
+participant "Flask" as Server
+participant "Job数据" as JobData
+activate User
+activate Client
+User -> Client: 请求获取预览数据
+Client -> Server: 发送获取预览数据请求
+activate Server
+Server -> JobData: 调用数据获取函数
+activate JobData
+alt 请求参数不全
+    JobData --> Server: 返回400错误，参数不能为空
+    deactivate JobData
+    Server --> Client: 返回400错误，参数不能为空
+    deactivate Server
+else
+    JobData --> Server: 返回数据
+    deactivate JobData
+    Server --> Client: 返回预览数据
+    deactivate Server
+end
+deactivate Client
+deactivate User
+@enduml

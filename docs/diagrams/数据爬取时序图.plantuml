@@ -1,0 +1,29 @@
+@startuml
+actor User
+participant "客户端" as Client
+participant "Flask" as Server
+participant "爬虫类" as Spider
+activate User
+activate Client
+User -> Client: 提交爬虫任务请求
+Client -> Server: 发送爬虫任务请求
+activate Server
+Server -> Spider: 触发爬虫任务
+activate Spider
+alt 参数不完整
+    Server -> Client: 返回400错误，参数不能为空
+    Client -> User: 显示参数不能为空的提示
+else
+    alt 需要全量爬取
+        Server -> Spider: 调用全量爬虫函数
+    else 需要增量爬取
+        Server -> Spider: 调用增量爬虫函数
+    end
+    Server -> Client: 返回成功消息
+    Client -> User: 显示成功提示
+end
+deactivate Spider
+deactivate Server
+deactivate Client
+deactivate User
+@enduml

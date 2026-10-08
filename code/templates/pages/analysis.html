@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="/static/img/logo/favicon.ico">
+    <link rel="apple-touch-icon" href="/static/img/logo/apple-touch-icon.png">
+    <link rel="icon" href="/static/img/logo/favicon.ico" sizes="48x48">
+    <link rel="icon" href="/static/img/logo/favicon.svg" sizes="any" type="image/svg+xml">
+    <title> Flask招聘数据可视化系统 </title>
+
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css"
+          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700"/>
+
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+    <!-- CSS Files -->
+    <link id="pagestyle" href="/static/css/material-dashboard.css?v=3.1.0" rel="stylesheet"/>
+</head>
+<body class="g-sidenav-show  bg-gray-100">
+
+<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark"
+       id="sidenav-main">
+
+    <div class="sidenav-header">
+        <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
+           aria-hidden="true" id="iconSidenav"></i>
+        <a class="navbar-brand m-0" href="/"
+           target="_blank">
+            <img src="/static/img/logo/favicon.ico" class="navbar-brand-img h-100" alt="main_logo">
+            <span class="ms-1 font-weight-bold text-white">Flask招聘数据可视化系统</span>
+        </a>
+    </div>
+
+
+    <hr class="horizontal light mt-0 mb-2">
+
+    <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
+        <ul class="navbar-nav">
+
+            <li class="nav-item">
+                <a class="nav-link text-white" href="/">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">home</i>
+                    </div>
+                    <span class="nav-link-text ms-1">主页</span>
+                </a>
+            </li>
+
+            <li class="dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#showmenu">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">table_view</i>
+                    </div>
+
+                    <span class="nav-link-text ms-1">数据</span>
+                </a>
+                <div class="collapse" id="showmenu">
+                    <ul class="navbar-nav ms-5">
+                        <li class="nav-item w-80">
+                            <a class="nav-link nav-item text-white" href="/spider">
+                                <span class="nav-link-text ms-1">爬取</span>
+                            </a>
+                        </li>
+                        <li class="nav-item w-80">
+                            <a class="nav-link nav-item text-white" href="/clean">
+                                <span class="nav-link-text ms-1">清洗</span>
+                            </a>
+                        </li>
+                        <li class="nav-item w-80">
+                            <a class="nav-link nav-item text-white" href="/show">
+                                <span class="nav-link-text ms-1">预览</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            <li class="nav-item text-white active bg-gradient-primary">
+                <a class="nav-link" href="/analysis">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">query_stats</i>
+                    </div>
+                    <span class="nav-link-text ms-1">可视化与分析</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</aside>
+
+<main class="main-content border-radius-lg">
+    <!-- Navbar -->
+
+    <nav class="navbar navbar-main navbar-expand-lg mx-4 shadow-none border-radius-xl" id="navbarBlur"
+         data-scroll="true">
+        <div class="container-fluid py-1 px-3">
+            <nav aria-label="breadcrumb">
+
+                <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">功能</a>
+                    </li>
+                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">可视化与分析</li>
+                </ol>
+                <h6 class="font-weight-bolder mb-0">可视化与分析</h6>
+
+            </nav>
+            <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+                <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+
+                    <div class="input-group input-group-outline">
+                        <label class="form-label">输入搜索关键词...</label>
+                        <input type="text" id="search" class="form-control">
+                    </div>
+
+                </div>
+                <ul class="navbar-nav d-flex align-items-center">
+
+                    <li>
+                        <div class="dropdown ms-3">
+                            <i class="fa fa-user me-sm-1"></i>
+
+                            <a href="#" class="dropdown-toggle " data-bs-toggle="dropdown"
+                               id="navbarDropdownMenuLink2">
+                                username
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
+                                <li>
+                                    <span class="dropdown-item" onclick="logout()">
+                                        注销
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item px-3 d-flex align-items-center">
+                        <a href="javascript:;" class="nav-link text-body p-0">
+                            <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- End Navbar -->
+
+
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="text-start col-6">
+                <div class="row ms-2">
+                    <select class="form-select ps-2 pe-2 w-25 p-1 border-primary text-primary font-weight-bold"
+                            id="data-name" name="data-name">
+                        <option value="51job">前程无忧</option>
+                    </select>
+                </div>
+            </div>
+            <div class="text-end col-6 d-flex justify-content-end">
+                <select class="form-select pe-2 me-2 w-20 p-1 border-primary text-primary font-weight-bold"
+                        id="data-source" name="data-source">
+                    <option value="csv">CSV</option>
+                    <option value="db">SQLite</option>
+                </select>
+                <select class="form-select pe-2 me-2 w-20 p-1 border-primary text-primary font-weight-bold"
+                        id="chart-type" name="chart-type">
+                    <option value="matplotlib">Matplotlib</option>
+                </select>
+            </div>
+        </div>
+        <div class="main-content d-flex justify-content-start mt-2 flex-wrap align-items-start" id="main-content">
+        </div>
+        <footer class="footer py-4">
+
+        </footer>
+    </div>
+
+</main>
+
+<!--   Core JS Files   -->
+<script src="/static/js/core/popper.min.js"></script>
+<script src="/static/js/core/bootstrap.min.js"></script>
+
+<!--   Plugins JS Files   -->
+<script src="/static/js/plugins/perfect-scrollbar.min.js"></script>
+<script src="/static/js/plugins/sweetalert2@11.js"></script>
+
+<script>
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+        var options = {
+            damping: '0.5'
+        }
+        Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const check = document.getElementById('dark-version');
+        const barfixed = document.getElementById('navbarFixed');
+        barfixed.click();
+
+        check.addEventListener('click', (e) => {
+            if (check.checked) {
+                localStorage.setItem('dark', 'true');
+            } else {
+                localStorage.setItem('dark', 'false');
+            }
+        });
+        if (localStorage.getItem('dark') === 'true') {
+            check.click();
+            darkMode();
+        }
+
+        barfixed.addEventListener('click', (e) => {
+            if (barfixed.checked) {
+                localStorage.setItem('barfixed', 'true');
+            } else {
+                localStorage.setItem('barfixed', 'false');
+            }
+        });
+        if (localStorage.getItem('barfixed') === 'true') {
+            barfixed.click();
+        }
+    });
+</script>
+
+<!-- Setting Toast by sweetalert -->
+<script>
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+</script>
+
+
+<!-- Chart loader -->
+<script>
+    ;(() => {
+        var timerInterval = 0;
+        let saveType = localStorage.getItem('datasource');
+        let saveChartype = localStorage.getItem('chartype');
+
+        const datasource = document.getElementById('data-source');
+        const chartype = document.getElementById('chart-type');
+        let dataname = localStorage.getItem('dataname') == null ? '51job' : localStorage.getItem('dataname');
+
+        if (saveType) {
+            datasource.value = saveType;
+        } else {
+            datasource.value = 'csv';
+            saveType = 'csv';
+        }
+
+        if (saveChartype) {
+            chartype.value = saveChartype;
+        } else {
+            chartype.value = 'matplotlib';
+            saveChartype = 'matplotlib';
+        }
+
+        datasource.addEventListener('change', function () {
+            localStorage.setItem('datasource', datasource.value);
+            window.location.reload();
+        });
+
+        chartype.addEventListener('change', function () {
+            localStorage.setItem('chartype', chartype.value);
+            window.location.reload();
+        });
+
+        const paramsString = window.location.search
+        const params = new URLSearchParams(paramsString);
+        const keyword = params.get('keyword') == null ? '' : params.get('keyword');
+
+        const fetchData = async () => {
+            try {
+                const url = `/api/analysis?keyword=${keyword}&name=${dataname}&type=${saveType}&chartype=${saveChartype}`;
+                const response = await fetch(url, {
+                    method: 'GET',
+                });
+                return await response.json();
+            } catch (error) {
+                Toast.fire({
+                    icon: 'error',
+                    title: '网络错误，请稍后重试',
+                });
+            }
+        };
+
+        Swal.fire({
+            title: "正在绘图中，请稍等",
+            html: "已经渲染<b></b>秒.",
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                clearInterval(timerInterval);
+                let Interval = 0;
+                timerInterval = setInterval(() => {
+                    Interval++;
+                    timer.textContent = Interval;
+                }, 1000);
+            },
+            willClose: () => {
+                timerInterval = 0;
+                clearInterval(timerInterval);
+            }
+        });
+
+        fetchData().then(result => {
+
+            if (result.status === 0) {
+                Toast.fire({
+                    icon: 'error',
+                    title: result.message,
+                });
+                return;
+            }
+
+            if (result.status === 1) {
+                Swal.close();
+                clearInterval(timerInterval);
+                Toast.fire({
+                    icon: 'success',
+                    title: '加载完成'
+                });
+                const items = result.data;
+                const content = document.getElementById('main-content');
+                for (const key in items) {
+                    if (items.hasOwnProperty(key)) {
+                        const item = items[key];
+
+                        const chart = document.createElement('div');
+                        chart.className = 'col-md-6';
+                        chart.innerHTML = `<div class="card m-2">
+                                                <div class="card-header">
+                                                    <h6 class="mb-0 ">${item.title}</h6>
+                                                </div>
+                                                <div class="card-body p-0 d-flex justify-content-center align-content-center">
+                                                    <img class="w-95" src="${item.data}">
+                                                </div>
+                                                <div class="card-footer pt-0">
+                                                    <hr class="dark horizontal">
+                                                    <div class="d-flex ">
+                                                        <i class="material-icons text-sm my-auto me-1">verified</i>
+                                                        <p class="mb-0 text-sm">${item.issue}</p>
+                                                    </div>
+                                                </div>
+                                            </div>`;
+                        content.appendChild(chart);
+                    }
+                }
+            }
+        });
+    })();
+</script>
+
+<!-- Keyword earch -->
+<script>
+    ;(() => {
+        document.getElementById('search').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const search = document.getElementById('search');
+                const keyword = search.value;
+                let url = new URL(window.location.href);
+                let params = url.searchParams;
+                params.set('keyword', keyword);
+                window.location.href = url.toString();
+            }
+        });
+    })();
+</script>
+
+<!-- Logout request -->
+<script>
+    const logout = () => {
+        fetch('/api/logout', {
+            method: 'POST',
+        }).then(response => response.json())
+            .then(data => {
+                if (data.status === 1) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: data.message
+                    });
+                    window.location.href = window.location.origin;
+                }
+            }).catch(error => {
+            Toast.fire({
+                icon: 'error',
+                title: '网络错误，请稍后重试'
+            });
+        });
+    }
+</script>
+
+<!-- User Setting -->
+<script>
+    const user = localStorage.getItem('user');
+    document.getElementById('navbarDropdownMenuLink2').innerText = user;
+</script>
+
+<!-- Github buttons -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+<!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+<script src="/static/js/material-dashboard.min.js?v=3.1.0"></script>
+</body>
+
+</html>

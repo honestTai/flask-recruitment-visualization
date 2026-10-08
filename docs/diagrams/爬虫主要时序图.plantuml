@@ -1,0 +1,25 @@
+@startuml
+actor User
+participant "客户端" as Client
+participant "Flask" as Server
+participant "爬虫类" as Spider
+activate User
+activate Client
+User -> Client: 提交爬虫任务请求
+Client -> Server: 启动爬虫
+activate Server
+Server -> Spider: 调用start函数
+activate Spider
+Spider -> Spider: 初始化爬虫参数
+Spider -> Spider: 构建WebDriver
+Spider -> Spider: 执行滑块验证
+Spider -> Spider: 获取HTML源码
+Spider -> Spider: 解析HTML并提取数据
+Spider -> Spider: 将数据存储到指定存储引擎中
+Spider -> Spider: 关闭WebDriver
+deactivate Spider
+Server -> Client: 返回爬虫任务完成消息
+deactivate Server
+deactivate Client
+deactivate User
+@enduml
